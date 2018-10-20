@@ -988,7 +988,7 @@ public class v21crearXMLcustom20 {
 		System.out.println("RESUMEN DE DOCUMENTO");
 		System.out.println("");
 
-		double _base_gravable=myCabecera.get_tot_vta_gra();
+		double _base_gravable=myCabecera.get_tot_vta_gra()-myCabecera.get_desc_glo();
 		double _base_exonerada=myCabecera.get_tot_vta_exo();
 		double _base_inafecta=myCabecera.get_tot_vta_in();
 
@@ -1028,6 +1028,11 @@ public class v21crearXMLcustom20 {
 		System.out.println("Descuento en Detalle____"+Formato.neto(_descuento_detalle));
 		System.out.println("TOTAL DESCUENTOS________"+Formato.neto(_descuentos));
 		System.out.println("");
+		
+		
+		
+		
+	//	System.out.println("Base Gravable - desc____"+Formato.neto(_base_gravable-_descuento));
 		double _gratuito=myAca.get_mtoOperGratuitas();
 
 
@@ -1859,7 +1864,7 @@ public class v21crearXMLcustom20 {
 
 
 
-		////////////////  datos del emisor
+		////////////////  datos dECEPTOR
 
 
 
@@ -1922,7 +1927,7 @@ public class v21crearXMLcustom20 {
 
 		//cbc:Line
 		Element Line_RECEPTOR = document.createElement("cbc:Line");
-		Node cdataLine_RECEPTOR = document.createCDATASection($DIRECCION);
+		Node cdataLine_RECEPTOR = document.createCDATASection(myAca.get_desDireccionCliente());
 		Line_RECEPTOR.appendChild(cdataLine_RECEPTOR);
 		AddressLine_RECEPTOR.appendChild(Line_RECEPTOR);
 
@@ -2018,8 +2023,9 @@ public class v21crearXMLcustom20 {
 
 		
 
-
-
+		
+		
+		
 
 
 
@@ -2295,7 +2301,123 @@ public class v21crearXMLcustom20 {
 
 		
 		
-	
+		
+		
+		if (_isc>0) {
+			
+		
+		// isc ///
+		////////////////////////////////////////////////////////////////
+		// cac:TaxSubtotal
+		Element TaxSubtotal_Header_ISC = document.createElement("cac:TaxSubtotal");
+		TaxTotal_Header.appendChild(TaxSubtotal_Header_ISC);
+		// cbc:TaxableAmount
+		Element TaxableAmount_header_ISC = document.createElement("cbc:TaxableAmount");
+		TaxableAmount_header_ISC.appendChild(document.createTextNode(""+Formato._xml(_base_gravable)));
+		TaxSubtotal_Header_ISC.appendChild(TaxableAmount_header_ISC);
+		Attr Atr_TaxableAmount_header_ISC = document.createAttribute("currencyID");	
+		Atr_TaxableAmount_header_ISC.setValue(myCabecera.get_moneda());
+		TaxableAmount_header_ISC.setAttributeNode(Atr_TaxableAmount_header_ISC);
+		// cbc:TaxAmount 
+		Element TaxAmount_header_ISC = document.createElement("cbc:TaxAmount");
+		TaxAmount_header_ISC.appendChild(document.createTextNode(""+Formato._xml(_isc)));
+		TaxSubtotal_Header_ISC.appendChild(TaxAmount_header_ISC);
+		Attr Atr_TaxAmount_header_ISC = document.createAttribute("currencyID");	
+		Atr_TaxAmount_header_ISC.setValue(myCabecera.get_moneda());
+		TaxAmount_header_ISC.setAttributeNode(Atr_TaxAmount_header_ISC);
+		// cac:TaxCategory
+		Element TaxCategory_header_ISC = document.createElement("cac:TaxCategory");
+		TaxSubtotal_Header_ISC.appendChild(TaxCategory_header_ISC);
+		Element TaxCategory_header_ID0_ISC = document.createElement("cbc:ID");
+	//	TaxCategory_header_ID0_ISC.appendChild(document.createTextNode("S"));
+	//	TaxCategory_header_ISC.appendChild(TaxCategory_header_ID0_ISC);
+	//	TaxCategory_header_ID0_ISC.setAttribute("schemeID", "UN/ECE 5305");
+	//	TaxCategory_header_ID0_ISC.setAttribute("schemeName", "Tax Category Identifier");
+	//	TaxCategory_header_ID0_ISC.setAttribute("schemeAgencyName", "United Nations Economic Commission for Europe");
+
+		//cac:TaxScheme
+		Element TaxScheme_header_ISC = document.createElement("cac:TaxScheme");
+		TaxCategory_header_ISC.appendChild(TaxScheme_header_ISC);
+		Element TaxScheme_header_id_ISC = document.createElement("cbc:ID");
+		TaxScheme_header_id_ISC.appendChild(document.createTextNode("2000"));
+		TaxScheme_header_ISC.appendChild(TaxScheme_header_id_ISC);
+		//schemeAgencyName="PE:SUNAT"
+		Attr Atr_schemeAgencyNameID_ISC = document.createAttribute("schemeAgencyName");	
+		Atr_schemeAgencyNameID_ISC.setValue("PE:SUNAT");
+		TaxScheme_header_id_ISC.setAttributeNode(Atr_schemeAgencyNameID_ISC);
+		TaxScheme_header_id_ISC.setAttribute("schemeID", "UN/ECE 5153");
+		TaxScheme_header_id_ISC.setAttribute("schemeName", "Codigo de tributos");
+		// cbc:Name
+		Element TaxScheme_header_Name_ISC = document.createElement("cbc:Name");
+		TaxScheme_header_Name_ISC.appendChild(document.createTextNode("ISC"));
+		TaxScheme_header_ISC.appendChild(TaxScheme_header_Name_ISC);
+		// cbc:TaxTypeCode
+		Element TaxScheme_header_TaxTypeCode_ISC = document.createElement("cbc:TaxTypeCode");
+		TaxScheme_header_TaxTypeCode_ISC.appendChild(document.createTextNode("EXC"));
+		TaxScheme_header_ISC.appendChild(TaxScheme_header_TaxTypeCode_ISC);
+		/////////////////////////////////////////////////////////// FIN DE GRABADAS
+
+		
+		}
+		
+		
+		
+		
+	/*	
+		
+		// otros gravamenes ///
+		////////////////////////////////////////////////////////////////
+		// cac:TaxSubtotal
+		Element TaxSubtotal_Header_Otros = document.createElement("cac:TaxSubtotal");
+		TaxTotal_Header.appendChild(TaxSubtotal_Header_Otros);
+		// cbc:TaxableAmount
+		Element TaxableAmount_header_Otros = document.createElement("cbc:TaxableAmount");
+		TaxableAmount_header_Otros.appendChild(document.createTextNode(""+Formato._xml(_base_gravable)));
+		TaxSubtotal_Header_Otros.appendChild(TaxableAmount_header_Gra);
+		Attr Atr_TaxableAmount_header_Otros = document.createAttribute("currencyID");	
+		Atr_TaxableAmount_header_Otros.setValue(myCabecera.get_moneda());
+		TaxableAmount_header_Otros.setAttributeNode(Atr_TaxableAmount_header_Otros);
+		// cbc:TaxAmount 
+		Element TaxAmount_header_Otros = document.createElement("cbc:TaxAmount");
+		TaxAmount_header_Otros.appendChild(document.createTextNode(""+Formato._xml(_igv)));
+		TaxSubtotal_Header_Otros.appendChild(TaxAmount_header_Otros);
+		Attr Atr_TaxAmount_header_Otros = document.createAttribute("currencyID");	
+		Atr_TaxAmount_header_Otros.setValue(myCabecera.get_moneda());
+		TaxAmount_header_Otros.setAttributeNode(Atr_TaxAmount_header_Otros);
+		// cac:TaxCategory
+		Element TaxCategory_header_Otros = document.createElement("cac:TaxCategory");
+		TaxSubtotal_Header_Otros.appendChild(TaxCategory_header_Otros);
+		Element TaxCategory_header_ID0_Otros = document.createElement("cbc:ID");
+	//	TaxCategory_header_ID0_Gra.appendChild(document.createTextNode("S"));
+	//	TaxCategory_header_Gra.appendChild(TaxCategory_header_ID0_Gra);
+	//	TaxCategory_header_ID0_Gra.setAttribute("schemeID", "UN/ECE 5305");
+	//	TaxCategory_header_ID0_Gra.setAttribute("schemeName", "Tax Category Identifier");
+	//	TaxCategory_header_ID0_Gra.setAttribute("schemeAgencyName", "United Nations Economic Commission for Europe");
+
+		//cac:TaxScheme
+		Element TaxScheme_header_Otros = document.createElement("cac:TaxScheme");
+		TaxCategory_header_Otros.appendChild(TaxScheme_header_Otros);
+		Element TaxScheme_header_id_Otros = document.createElement("cbc:ID");
+		TaxScheme_header_id_Otros.appendChild(document.createTextNode("1000"));
+		TaxScheme_header_Otros.appendChild(TaxScheme_header_id_Otros);
+		//schemeAgencyName="PE:SUNAT"
+		Attr Atr_schemeAgencyNameID_Otros = document.createAttribute("schemeAgencyName");	
+		Atr_schemeAgencyNameID_Otros.setValue("PE:SUNAT");
+		TaxScheme_header_id_Otros.setAttributeNode(Atr_schemeAgencyNameID_Otros);
+		TaxScheme_header_id_Otros.setAttribute("schemeID", "UN/ECE 5305");
+		TaxScheme_header_id_Otros.setAttribute("schemeAgencyID", "6");
+		// cbc:Name
+		Element TaxScheme_header_Name_Otros = document.createElement("cbc:Name");
+		TaxScheme_header_Name_Otros.appendChild(document.createTextNode("IGV"));
+		TaxScheme_header_Otros.appendChild(TaxScheme_header_Name_Otros);
+		// cbc:TaxTypeCode
+		Element TaxScheme_header_TaxTypeCode_Otros = document.createElement("cbc:TaxTypeCode");
+		TaxScheme_header_TaxTypeCode_Otros.appendChild(document.createTextNode("VAT"));
+		TaxScheme_header_Otros.appendChild(TaxScheme_header_TaxTypeCode_Otros);
+		/////////////////////////////////////////////////////////// FIN DE GRABADAS
+
+
+	*/
 
 		
 		
@@ -2370,8 +2492,12 @@ public class v21crearXMLcustom20 {
 		Atr_PayableAmount.setValue(myCabecera.get_moneda());
 		PayableAmount.setAttributeNode(Atr_PayableAmount);
 
-	
 
+		
+		
+		
+		
+		
 		
 		/// datelle de la factura
 		
@@ -2379,6 +2505,29 @@ public class v21crearXMLcustom20 {
 
 		for (int linea=1; linea<_counterDet; linea++) {	
 
+			
+			
+			// sacar la totallidad de los impouestos
+			double _igv_detalle=myDetalle[linea].get_igv_unit();
+			double _base_gravable_detalle=myDetalle[linea].get_valor_unit();
+	//		System.out.println("cantidad   "+myDetalle[linea].get_cantidad());
+	//		System.out.println("precio   "+myDetalle[linea].get_precio_unit());
+			
+			double _isc_detalle=myDetalle[linea].get_isc_unit();
+			double _tot_trubutos_detalle=_igv_detalle+_isc_detalle;
+			String _tipo_igv=myDetalle[linea].get_afec_igv();
+			String _tipo_isc=myDetalle[linea].get_tipo_isc();
+			double _price_amount=0;
+			
+			if (myDetalle[linea].get_igv_unit()>0) {
+				_price_amount=myDetalle[linea].get_valor_unit()+(myDetalle[linea].get_igv_unit()/myDetalle[linea].get_cantidad());
+				
+			} else {
+				_price_amount=myDetalle[linea].get_valor_unit();
+			}
+				
+		//	System.out.println("******"+_total_linea);
+			
 			// cac:InvoiceLine
 			Element InvoiceLine = document.createElement("cac:InvoiceLine");
 			element.appendChild(InvoiceLine);		
@@ -2400,10 +2549,10 @@ public class v21crearXMLcustom20 {
 			//		InvoicedQuantity.setAttribute("unitCodeListID", "UN/ECE rec 20");
 			//		InvoicedQuantity.setAttribute("unitCodeListAgencyName", "United Nations Economic Commission for Europe");
 
-
+// alex
 			// cbc:LineExtensionAmount
 			Element LineExtensionAmount = document.createElement("cbc:LineExtensionAmount");
-			LineExtensionAmount.appendChild(document.createTextNode(Formato.GranDinero(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
+			LineExtensionAmount.appendChild(document.createTextNode(Formato._xml((myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())-myDetalle[linea].get_desc_unit() )));
 			InvoiceLine.appendChild(LineExtensionAmount);
 
 			// currencyID
@@ -2425,8 +2574,8 @@ public class v21crearXMLcustom20 {
 
 			// cbc:PriceAmount
 			Element PriceAmount_item_reference = document.createElement("cbc:PriceAmount");
-		//	PriceAmount_item_reference.appendChild(document.createTextNode(Formato.GranDinero(myDetalle[linea].get_precio_unit()-myDetalle[linea].get_desc_unit()    )));
-			PriceAmount_item_reference.appendChild(document.createTextNode(Formato.GranDinero(myDetalle[linea].get_precio_unit())));
+		//	PriceAmount_item_reference.appendChild(document.createTextNode(Formato._xml(myDetalle[linea].get_precio_unit()-myDetalle[linea].get_desc_unit()    )));
+			PriceAmount_item_reference.appendChild(document.createTextNode(Formato._xml(_price_amount)));
 			AlternativeConditionPrice.appendChild(PriceAmount_item_reference);
 
 
@@ -2451,11 +2600,7 @@ public class v21crearXMLcustom20 {
 
 
 
-			// sacar la totallidad de los impouestos
-			double _igv_detalle=myDetalle[linea].get_igv_unit();
-			double _base_gravable_detalle=myDetalle[linea].get_cantidad()*myDetalle[linea].get_precio_unit();
-			String _tipo_igv=myDetalle[linea].get_afec_igv();
-
+	
 
 
 			
@@ -2485,7 +2630,7 @@ public class v21crearXMLcustom20 {
 				AllowanceCharge_Detail.appendChild(AllowanceChargeReasonCode_01);
 
 
-				double _MultiplierFactorNumeric=myDetalle[linea].get_desc_unit()/myDetalle[linea].get_valor_tot();
+				double _MultiplierFactorNumeric=myDetalle[linea].get_desc_unit()/(myDetalle[linea].get_cantidad()*myDetalle[linea].get_valor_unit());
 
 
 				// cbc:MultiplierFactorNumeric
@@ -2505,7 +2650,7 @@ public class v21crearXMLcustom20 {
 
 				// cbc:BaseAmount 
 				Element BaseAmount_Detail = document.createElement("cbc:BaseAmount");
-				BaseAmount_Detail.appendChild(document.createTextNode(""+myDetalle[linea].get_valor_tot()));
+				BaseAmount_Detail.appendChild(document.createTextNode(""+myDetalle[linea].get_cantidad()*myDetalle[linea].get_valor_unit()));
 				AllowanceCharge_Detail.appendChild(BaseAmount_Detail);
 
 				// currencyID
@@ -2533,7 +2678,7 @@ public class v21crearXMLcustom20 {
 				InvoiceLine.appendChild(TaxTotal_Detalle);
 				// cac:TaxAmount
 				Element TaxAmount_Detalle = document.createElement("cbc:TaxAmount");
-				TaxAmount_Detalle.appendChild(document.createTextNode(""+_igv_detalle));
+				TaxAmount_Detalle.appendChild(document.createTextNode(""+_tot_trubutos_detalle));
 				TaxTotal_Detalle.appendChild(TaxAmount_Detalle);
 				Attr Atr_TaxableAmount_detalle_Gra01 = document.createAttribute("currencyID");	
 				Atr_TaxableAmount_detalle_Gra01.setValue(myCabecera.get_moneda());
@@ -2543,7 +2688,7 @@ public class v21crearXMLcustom20 {
 				TaxTotal_Detalle.appendChild(TaxSubtotal_detalle_Gra);
 				// cbc:TaxableAmount
 				Element TaxableAmount_detalle_Gra = document.createElement("cbc:TaxableAmount");
-				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato.GranDinero(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
+				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml((myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())-myDetalle[linea].get_desc_unit())));
 				TaxSubtotal_detalle_Gra.appendChild(TaxableAmount_detalle_Gra);
 				Attr Atr_TaxableAmount_detalle_Gra = document.createAttribute("currencyID");	
 				Atr_TaxableAmount_detalle_Gra.setValue(myCabecera.get_moneda());
@@ -2620,6 +2765,99 @@ public class v21crearXMLcustom20 {
 				Element TaxScheme_detalle_TaxTypeCode_Gra = document.createElement("cbc:TaxTypeCode");
 				TaxScheme_detalle_TaxTypeCode_Gra.appendChild(document.createTextNode("VAT"));
 				TaxScheme_detail.appendChild(TaxScheme_detalle_TaxTypeCode_Gra);
+		
+			
+				if (_isc_detalle>0) {
+					// cac:TaxTotal
+					Element TaxSubtotal_detalle_ISC = document.createElement("cac:TaxSubtotal");
+					TaxTotal_Detalle.appendChild(TaxSubtotal_detalle_ISC);
+					// cbc:TaxableAmount
+					Element TaxableAmount_detalle_ISC = document.createElement("cbc:TaxableAmount");
+					TaxableAmount_detalle_ISC.appendChild(document.createTextNode(""+Formato._xml(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
+					TaxSubtotal_detalle_ISC.appendChild(TaxableAmount_detalle_ISC);
+					Attr Atr_TaxableAmount_detalle_ISC = document.createAttribute("currencyID");	
+					Atr_TaxableAmount_detalle_ISC.setValue(myCabecera.get_moneda());
+					TaxableAmount_detalle_ISC.setAttributeNode(Atr_TaxableAmount_detalle_ISC);
+					// cbc:TaxAmount 
+					Element TaxAmount_detalle_ISC = document.createElement("cbc:TaxAmount");
+					TaxAmount_detalle_ISC.appendChild(document.createTextNode(""+_isc_detalle));
+					TaxSubtotal_detalle_ISC.appendChild(TaxAmount_detalle_ISC);
+					Attr Atr_TaxAmount_detalle_ISC = document.createAttribute("currencyID");	
+					Atr_TaxAmount_detalle_ISC.setValue(myCabecera.get_moneda());
+					TaxAmount_detalle_ISC.setAttributeNode(Atr_TaxAmount_detalle_ISC);
+					// cac:TaxCategory
+					Element TaxCategory_detalle_ISC = document.createElement("cac:TaxCategory");
+					TaxSubtotal_detalle_ISC.appendChild(TaxCategory_detalle_ISC);
+					// id
+		//			Element TaxCategory_detalle_ISC_ID = document.createElement("cbc:ID");
+		//			TaxCategory_detalle_ISC_ID.appendChild(document.createTextNode("S"));
+		//			TaxCategory_detalle_ISC.appendChild(TaxCategory_detalle_ISC_ID);
+		//			TaxCategory_detalle_ISC_ID.setAttribute("schemeID", "UN/ECE 5305");
+		//			TaxCategory_detalle_ISC_ID.setAttribute("schemeName", "Tax Category Identifier");
+		//			TaxCategory_detalle_ISC_ID.setAttribute("schemeAgencyName", "United Nations Economic Commission for Europe");
+					// cbc:Percent
+					Element Percent_isc = document.createElement("cbc:Percent");
+					Percent_isc.appendChild(document.createTextNode("1"));
+					TaxCategory_detalle_ISC.appendChild(Percent_isc);
+					// cbc:TaxExemptionReasonCode
+					Element TierRange = document.createElement("cbc:TierRange");
+					TierRange.appendChild(document.createTextNode(_tipo_isc));
+					TaxCategory_detalle_ISC.appendChild(TierRange);
+					
+				//	TierRange.setAttribute("listAgencyName", "PE:SUNAT");
+				//	TierRange.setAttribute("listName", "Afectacion del IGV");
+				//	TierRange.setAttribute("listURI", "urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo07");
+					// listAgencyName
+				//	Attr Atr_TaxExemptionReasonCode_slistAgencyName_ISC = document.createAttribute("listAgencyName");	
+				//	Atr_TaxExemptionReasonCode_slistAgencyName_ISC.setValue("PE:SUNAT");
+				//	TaxExemptionReasonCode.setAttributeNode(Atr_TaxExemptionReasonCode_slistAgencyName_ISC);
+
+					//slistName
+				//	Attr Atr_TaxExemptionReasonCode_listName_ISC = document.createAttribute("listName");	
+				//	Atr_TaxExemptionReasonCode_listName_ISC.setValue("Afectacion del IGV");
+				//	TaxExemptionReasonCode.setAttributeNode(Atr_TaxExemptionReasonCode_listName_ISC);
+
+					//listUR
+				//	Attr Atr_TaxExemptionReasonCode_listUR_ISC = document.createAttribute("listURI");	
+				//	Atr_TaxExemptionReasonCode_listUR_ISC.setValue("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo07");
+				//	TaxExemptionReasonCode.setAttributeNode(Atr_TaxExemptionReasonCode_listUR_ISC);
+
+					//cac:TaxScheme
+					Element TaxScheme_detail_isc = document.createElement("cac:TaxScheme");
+					TaxScheme_detail_isc.appendChild(document.createTextNode(""));
+					TaxCategory_detalle_ISC.appendChild(TaxScheme_detail_isc);
+
+					// cbc:ID
+					Element TaxScheme_detalle_id_ISC = document.createElement("cbc:ID");
+					TaxScheme_detalle_id_ISC.appendChild(document.createTextNode("2000"));
+					TaxScheme_detail_isc.appendChild(TaxScheme_detalle_id_ISC);
+					// schemeID="UN/ECE 5153"
+					Attr Atr_id_schemeAgencyName_ISC = document.createAttribute("schemeAgencyName");	
+					Atr_id_schemeAgencyName_ISC.setValue("PE:SUNAT");
+					TaxScheme_detalle_id_ISC.setAttributeNode(Atr_id_schemeAgencyName_ISC);
+					//  schemeName="Tax Scheme Identifier"
+					Attr Atr_id_schemeID_ISC = document.createAttribute("schemeID");	
+					Atr_id_schemeID_ISC.setValue("UN/ECE 5153");
+					TaxScheme_detalle_id_ISC.setAttributeNode(Atr_id_schemeID_ISC);
+					// schemeAgencyName="United Nations Economic Commission for Europe"
+					Attr Atr_id_schemeName_ISC = document.createAttribute("schemeName");	
+					Atr_id_schemeName_ISC.setValue("Codigo de tributos");
+					TaxScheme_detalle_id_ISC.setAttributeNode(Atr_id_schemeName_ISC);
+					// cbc:Name
+					Element TaxScheme_detalle_Name_ISC = document.createElement("cbc:Name");
+					TaxScheme_detalle_Name_ISC.appendChild(document.createTextNode("ISC"));
+					TaxScheme_detail_isc.appendChild(TaxScheme_detalle_Name_ISC);
+					// cbc:TaxTypeCode
+					Element TaxScheme_detalle_TaxTypeCode_ISC = document.createElement("cbc:TaxTypeCode");
+					TaxScheme_detalle_TaxTypeCode_ISC.appendChild(document.createTextNode("EXC"));
+					TaxScheme_detail_isc.appendChild(TaxScheme_detalle_TaxTypeCode_ISC);
+				}
+				
+				///////////////////////////////////////////////////////////  fin de operaciones gravadas
+
+			
+			
+			
 			}
 			
 			///////////////////////////////////////////////////////////  fin de operaciones gravadas
@@ -2644,7 +2882,7 @@ public class v21crearXMLcustom20 {
 				TaxTotal_Detalle.appendChild(TaxSubtotal_detalle_Gra);
 				// cbc:TaxableAmount
 				Element TaxableAmount_detalle_Gra = document.createElement("cbc:TaxableAmount");
-				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato.GranDinero(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
+				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
 				TaxSubtotal_detalle_Gra.appendChild(TaxableAmount_detalle_Gra);
 				Attr Atr_TaxableAmount_detalle_Gra = document.createAttribute("currencyID");	
 				Atr_TaxableAmount_detalle_Gra.setValue(myCabecera.get_moneda());
@@ -2744,7 +2982,7 @@ public class v21crearXMLcustom20 {
 				TaxTotal_Detalle.appendChild(TaxSubtotal_detalle_Gra);
 				// cbc:TaxableAmount
 				Element TaxableAmount_detalle_Gra = document.createElement("cbc:TaxableAmount");
-				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato.GranDinero(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
+				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
 				TaxSubtotal_detalle_Gra.appendChild(TaxableAmount_detalle_Gra);
 				Attr Atr_TaxableAmount_detalle_Gra = document.createAttribute("currencyID");	
 				Atr_TaxableAmount_detalle_Gra.setValue(myCabecera.get_moneda());
@@ -2843,7 +3081,7 @@ public class v21crearXMLcustom20 {
 				TaxTotal_Detalle.appendChild(TaxSubtotal_detalle_Gra);
 				// cbc:TaxableAmount
 				Element TaxableAmount_detalle_Gra = document.createElement("cbc:TaxableAmount");
-				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato.GranDinero(0)));
+				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml(0)));
 				TaxSubtotal_detalle_Gra.appendChild(TaxableAmount_detalle_Gra);
 				Attr Atr_TaxableAmount_detalle_Gra = document.createAttribute("currencyID");	
 				Atr_TaxableAmount_detalle_Gra.setValue(myCabecera.get_moneda());
@@ -2921,9 +3159,9 @@ public class v21crearXMLcustom20 {
 			///////////////////////////////////////////////////////////  fin de operaciones EXONERADAS
 
 
+			// PARA ISC
 			
-			
-			
+
 			
 			
 
@@ -2968,7 +3206,7 @@ public class v21crearXMLcustom20 {
 
 			// cbc:PriceAmount
 			Element PriceAmount_item = document.createElement("cbc:PriceAmount");
-			PriceAmount_item.appendChild(document.createTextNode(Formato.GranDinero(myDetalle[linea].get_valor_unit())));
+			PriceAmount_item.appendChild(document.createTextNode(Formato._xml(myDetalle[linea].get_valor_unit())));
 			Price_item.appendChild(PriceAmount_item);
 
 
@@ -2981,7 +3219,7 @@ public class v21crearXMLcustom20 {
 
 			// cbc:PriceAmount 
 			//			Element PriceAmount_Detail = document.createElement("cbc:PriceAmount");
-			//			PriceAmount_Detail.appendChild(document.createTextNode(Formato.GranDinero(myDetalle[linea].get_valor_unit())));
+			//			PriceAmount_Detail.appendChild(document.createTextNode(Formato._xml(myDetalle[linea].get_valor_unit())));
 			//			Price_item.appendChild(PriceAmount_Detail);
 
 
@@ -3113,6 +3351,84 @@ public class v21crearXMLcustom20 {
 
 		}
 
+		
+		
+		
+		
+		
+		
+		// anticipos
+		////////////
+
+
+		for (int linea=1; linea<_counterRel; linea++) {	
+
+			try {
+				String _status = mydocumentos_relacionados[linea].get_indDocRelacionado();
+
+				if (mydocumentos_relacionados[linea].get_indDocRelacionado().equals("2")) {
+					// cac:DespatchDocumentReference
+					////////////////////////////////////////////////////////////////////
+
+					// cac:PrepaidPayment
+					Element PrepaidPayment = document.createElement("cac:PrepaidPayment");
+					element.appendChild(PrepaidPayment);
+
+					// PrepaidPaymentID
+					Element PrepaidPaymentID = document.createElement("cbc:ID");
+					PrepaidPaymentID.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_numDocRelacionado()));
+					PrepaidPayment.appendChild(PrepaidPaymentID);
+
+					// cbc:PaidAmount
+					Element PaidAmount_rel = document.createElement("cbc:PaidAmount");
+					PaidAmount_rel.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_mtoDocRelacionado()));
+					PrepaidPayment.appendChild(PaidAmount_rel);
+
+
+					// currencyID
+					Attr currencyID_Pre = document.createAttribute("currencyID");
+					currencyID_Pre.setValue(myCabecera.get_moneda());
+					PaidAmount_rel.setAttributeNode(currencyID_Pre);
+
+					// cbc:InstructionID
+					Element InstructionID = document.createElement("cbc:InstructionID");
+					InstructionID.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_numDocEmisor()));
+					PrepaidPayment.appendChild(InstructionID);
+
+
+
+
+					//	Element Despatch = document.createElement("cac:DespatchDocumentReference");
+					//	element.appendChild(Despatch);
+
+					// cbc:ID
+					//		Element _ID_Despatch = document.createElement("cbc:ID");
+					//		_ID_Despatch.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_numDocEmisor()));
+					//		System.out.println(mydocumentos_relacionados[linea].get_numDocEmisor());
+
+					//		_ID_Despatch.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_numDocRelacionado()));					
+					//		Despatch.appendChild(_ID_Despatch);
+
+					// cbc:DocumentTypeCode
+					//		Element DocumentTypeCode = document.createElement("cbc:DocumentTypeCode");
+					//		DocumentTypeCode.appendChild(document.createTextNode(myCabecera.get_tipo_comprobante()));
+					//		Despatch.appendChild(DocumentTypeCode);
+
+				}
+			} catch (Exception e) {
+
+				//	e.printStackTrace();
+			}
+
+		}		
+		///////
+	
+
+		
+
+
+		
+		
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer transformer = tf.newTransformer();
 		//		transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");

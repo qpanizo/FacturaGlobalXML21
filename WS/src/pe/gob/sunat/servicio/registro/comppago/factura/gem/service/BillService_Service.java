@@ -43,11 +43,11 @@ extends Service
 
 			System.out.println("");
 			// ruta BETA
-			    url = new URL("https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService?wsdl");
+		//   url = new URL("https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService?wsdl");
 
 
 			// ruta REAL
-		//	  url = new URL("https://www.sunat.gob.pe/ol-ti-itcpfegem/billService?wsdl");
+		   	  url = new URL("https://www.sunat.gob.pe/ol-ti-itcpfegem/billService?wsdl");
 			
 			
 			// anterior 
