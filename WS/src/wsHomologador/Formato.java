@@ -20,6 +20,20 @@ public class Formato {
         
         // El resultado sería el siguiente: 94.751.890,37
     }
+ 
+    
+    public static String _xml6(double _numero) {
+        String _regreso;
+    	simb = new DecimalFormatSymbols();
+        simb.setDecimalSeparator('.');
+        simb.setGroupingSeparator(',');
+        df = new DecimalFormat("#######0.000000", simb);
+        _regreso=padLeft(df.format(_numero),15).trim();
+        return _regreso;
+        
+        // El resultado sería el siguiente: 94.751.890,37
+    }
+ 
     
     public static String dinero(double _numero) {
         String _regreso;

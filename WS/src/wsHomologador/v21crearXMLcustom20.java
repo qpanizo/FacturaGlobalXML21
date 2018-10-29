@@ -2552,7 +2552,9 @@ public class v21crearXMLcustom20 {
 // alex
 			// cbc:LineExtensionAmount
 			Element LineExtensionAmount = document.createElement("cbc:LineExtensionAmount");
-			LineExtensionAmount.appendChild(document.createTextNode(Formato._xml((myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())-myDetalle[linea].get_desc_unit() )));
+			double _lineExtensionAmount = (myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())-myDetalle[linea].get_desc_unit();
+			
+			LineExtensionAmount.appendChild(document.createTextNode(Formato._xml(_lineExtensionAmount )));
 			InvoiceLine.appendChild(LineExtensionAmount);
 
 			// currencyID
@@ -2640,7 +2642,7 @@ public class v21crearXMLcustom20 {
 
 				// cbc:Amount 
 				Element Amount_Detail = document.createElement("cbc:Amount");
-				Amount_Detail.appendChild(document.createTextNode(""+myDetalle[linea].get_desc_unit()));
+				Amount_Detail.appendChild(document.createTextNode(""+Formato._xml(myDetalle[linea].get_desc_unit())));
 				AllowanceCharge_Detail.appendChild(Amount_Detail);
 
 				// currencyID
@@ -2650,7 +2652,7 @@ public class v21crearXMLcustom20 {
 
 				// cbc:BaseAmount 
 				Element BaseAmount_Detail = document.createElement("cbc:BaseAmount");
-				BaseAmount_Detail.appendChild(document.createTextNode(""+myDetalle[linea].get_cantidad()*myDetalle[linea].get_valor_unit()));
+				BaseAmount_Detail.appendChild(document.createTextNode(""+Formato._xml(myDetalle[linea].get_cantidad()*myDetalle[linea].get_valor_unit())));
 				AllowanceCharge_Detail.appendChild(BaseAmount_Detail);
 
 				// currencyID
@@ -3206,7 +3208,7 @@ public class v21crearXMLcustom20 {
 
 			// cbc:PriceAmount
 			Element PriceAmount_item = document.createElement("cbc:PriceAmount");
-			PriceAmount_item.appendChild(document.createTextNode(Formato._xml(myDetalle[linea].get_valor_unit())));
+			PriceAmount_item.appendChild(document.createTextNode(Formato._xml6(myDetalle[linea].get_valor_unit())));
 			Price_item.appendChild(PriceAmount_item);
 
 

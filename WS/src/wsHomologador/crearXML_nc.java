@@ -928,12 +928,43 @@ public class crearXML_nc {
 		Attr currencyID_UBL = document.createAttribute("currencyID");
 		currencyID_UBL.setValue(myCabecera_nc.get_moneda());
 		PayableAmount_UBL.setAttributeNode(currencyID_UBL);
+		
+		
+		
+	///////////////////////////////////
+		
+	
+////////////////////////
+	
+		
+		// sac:AdditionalMonetaryTotal VENTAS INAFECCTAS
+		Element AdditionalMonetaryTotal_INA = document.createElement("sac:AdditionalMonetaryTotal");
+		AdditionalInformation.appendChild(AdditionalMonetaryTotal_INA);	
 
 
+		// cbc:ID  VENTAS EXONERADAS
+		Element ID_UBL_ID_UBL_INA = document.createElement("cbc:ID");
+		ID_UBL_ID_UBL_INA.appendChild(document.createTextNode("1002"));
+		AdditionalMonetaryTotal_INA.appendChild(ID_UBL_ID_UBL_INA);
+
+		// cbc:PayableAmount
+		Element PayableAmount_UBL_INA= document.createElement("cbc:PayableAmount");
+		PayableAmount_UBL_INA.appendChild(document.createTextNode(""+myCabecera_nc.get_tot_vta_in()));
+		AdditionalMonetaryTotal_INA.appendChild(PayableAmount_UBL_INA);
+
+		// currencyID
+		Attr currencyID_UBL_INA = document.createAttribute("currencyID");
+		currencyID_UBL_INA.setValue(myCabecera_nc.get_moneda());
+		PayableAmount_UBL_INA.setAttributeNode(currencyID_UBL_INA);
 
 
-
-
+		
+		
+		
+////////////////////////////		
+		
+		
+	
 		// sac:AdditionalMonetaryTotal VENTAS EXONERADAS
 		Element AdditionalMonetaryTotal_EXONE = document.createElement("sac:AdditionalMonetaryTotal");
 		AdditionalInformation.appendChild(AdditionalMonetaryTotal_EXONE);	
@@ -954,6 +985,12 @@ public class crearXML_nc {
 		currencyID_UBL_EXONE.setValue(myCabecera_nc.get_moneda());
 		PayableAmount_UBL_EXONE.setAttributeNode(currencyID_UBL_EXONE);
 
+		
+		
+		
+		
+		
+		
 		for (int lineaLey=1; lineaLey<_counterLey; lineaLey++) {			
 
 			System.out.println("counter:"+lineaLey);
