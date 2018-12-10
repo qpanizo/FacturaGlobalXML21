@@ -21,6 +21,19 @@ public class denomina {
 		llena_numeros();
 
 
+		if(_numero<1) {
+				_numero=_numero*100;
+				Integer _numero_int = (int)_numero;
+				_cadena=_numero_int+"/100";
+				return _cadena+" "+_moneda;
+		}
+	
+			
+
+		
+
+		
+		
  		if(_numero>=1000000) {
  			_millones=_numero/1000000;
  			int _millones_int = (int)_millones;

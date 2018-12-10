@@ -147,6 +147,7 @@ public class Firma_Documento {
 				
 				Node content = doc.getElementsByTagName("ext:UBLExtensions").item(0);
 				
+		//		Node UBLExtension = doc.getElementsByTagName("ext:UBLExtension").item(0);
 				/// ext:UBLExtension
 			    Element UBLExtension = doc.createElement("ext:UBLExtension");
 			    content.appendChild(UBLExtension);	

@@ -84,9 +84,26 @@ public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
 			 _path=".";
 		 }
 		
+		 
+		 
+		   
+		    String OS = System.getProperty("os.name").toLowerCase();
+		       
+		    
+		    
+		    String _ruta_param="";
+		    
+		    if (OS.substring(0,3).equals("win")) {
+		    	_ruta_param=_path+_win+"data"+_win+_RUC+_win+"certificados"+_win+_RUC+"-param.fg";
+		    } else {
+		    	_ruta_param=_path+_lin+"data"+_lin+_RUC+_lin+"certificados"+_lin+_RUC+"-param.fg";
+		    }
+		    
+		 
+		 
 	    
 	    
-	    String _ruta_param=_path+_win+"data"+_win+_RUC+_win+"certificados"+_win+_RUC+"-param.fg";
+	     
 	//    System.out.println(_ruta_param);
 		
     	// lee los parametros duros...

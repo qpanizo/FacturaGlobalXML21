@@ -852,6 +852,14 @@ public class crearXML {
 		Element UBLExtensions = document.createElement("ext:UBLExtensions");
 		element.appendChild(UBLExtensions);
 		
+		
+		
+		
+		
+		
+		
+		
+		
 			/// NODO UBLExtensio
 			Element UBLExtension = document.createElement("ext:UBLExtension");
 			UBLExtensions.appendChild(UBLExtension);

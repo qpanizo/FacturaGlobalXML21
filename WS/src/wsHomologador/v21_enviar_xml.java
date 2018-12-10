@@ -14,11 +14,11 @@ import javax.activation.DataSource;
 import org.apache.soap.util.mime.ByteArrayDataSource;
 
 
-// alex gandara..
+
 // CLASE PARA EMITIR DOCUMENTOS GRAVADOS 
 //                   DOCUMENTOS EXONERADOR
 
-public class v21questionerCustom20 {
+public class v21_enviar_xml {
 	
 	public static String[] myParam = new String[1];
 	
@@ -103,21 +103,23 @@ public class v21questionerCustom20 {
 	    
 	    $RUC_INIT=args[0].substring(0,11);
 	    
+	    
+	    
 	    String OS = System.getProperty("os.name").toLowerCase();
-	    System.out.println(OS);
-	   
+	       
 	    
 	    
 	    String _ruta_param="";
 	    
 	    if (OS.substring(0,3).equals("win")) {
-		    _ruta_param=_path+_win+"data"+_win+$RUC_INIT+_win+"certificados"+_win+$RUC_INIT+"-param.fg";
+	    	_ruta_param=_path+_win+"data"+_win+$RUC_INIT+_win+"certificados"+_win+$RUC_INIT+"-param.fg";
 	    } else {
 	    	_ruta_param=_path+_lin+"data"+_lin+$RUC_INIT+_lin+"certificados"+_lin+$RUC_INIT+"-param.fg";
 	    }
+	   
 	    
 	    
-	    
+
 		readParam(_ruta_param);
 	
 	 	
@@ -393,33 +395,32 @@ public class v21questionerCustom20 {
 		
    	    $RUTA = misParametros.get_ruta_archivos_planos();
    	    
-   	    
-   	    
-   	 		
-   	    InputStream is_det = new FileInputStream($PATH_ARCHIVOS_PLANOS+$FILE_NAME+".det");
-		DataSource ds_det = new ByteArrayDataSource(is_det,"application/octet-stream");
-		DataHandler dhandler_det = new DataHandler(ds_det);
+   	
+	//	InputStream is_det = new FileInputStream($PATH_ARCHIVOS_PLANOS+$FILE_NAME+".det");
+	//	DataSource ds_det = new ByteArrayDataSource(is_det,"application/octet-stream");
+	//	DataHandler dhandler_det = new DataHandler(ds_det);
 		
-				
-		InputStream is_cab = new FileInputStream($PATH_ARCHIVOS_PLANOS+$FILE_NAME+".cab");
-		DataSource ds_cab = new ByteArrayDataSource(is_cab,"application/octet-stream");
-		DataHandler dhandler_cab = new DataHandler(ds_cab);
+	//	InputStream is_cab = new FileInputStream($PATH_ARCHIVOS_PLANOS+$FILE_NAME+".cab");
+	//	DataSource ds_cab = new ByteArrayDataSource(is_cab,"application/octet-stream");
+	//	DataHandler dhandler_cab = new DataHandler(ds_cab);
 		
-		InputStream is_aca = new FileInputStream($PATH_ARCHIVOS_PLANOS+$FILE_NAME+".aca");
-		DataSource ds_aca = new ByteArrayDataSource(is_aca,"application/octet-stream");
-		DataHandler dhandler_aca = new DataHandler(ds_aca);
+	//	InputStream is_aca = new FileInputStream($PATH_ARCHIVOS_PLANOS+$FILE_NAME+".aca");
+	//	DataSource ds_aca = new ByteArrayDataSource(is_aca,"application/octet-stream");
+	//	DataHandler dhandler_aca = new DataHandler(ds_aca);
 		
-		InputStream is_ley = new FileInputStream($PATH_ARCHIVOS_PLANOS+$FILE_NAME+".ley");
-		DataSource ds_ley = new ByteArrayDataSource(is_ley,"application/octet-stream");
-		DataHandler dhandler_ley = new DataHandler(ds_ley);
+	//	InputStream is_ley = new FileInputStream($PATH_ARCHIVOS_PLANOS+$FILE_NAME+".ley");
+	//	DataSource ds_ley = new ByteArrayDataSource(is_ley,"application/octet-stream");
+	//	DataHandler dhandler_ley = new DataHandler(ds_ley);
 		
 	 	
-	 	InputStream is_rel = new FileInputStream($PATH_ARCHIVOS_PLANOS+$FILE_NAME+".rel");
-	 	DataSource ds_rel = new ByteArrayDataSource(is_rel,"application/octet-stream");
-	 	DataHandler dhandler_rel = new DataHandler(ds_rel);
+	// 	InputStream is_rel = new FileInputStream($PATH_ARCHIVOS_PLANOS+$FILE_NAME+".rel");
+	// 	DataSource ds_rel = new ByteArrayDataSource(is_rel,"application/octet-stream");
+	// 	DataHandler dhandler_rel = new DataHandler(ds_rel);
 	 	
-	 	v21crearXMLcustom20.c_XML(dhandler_det, dhandler_cab, dhandler_aca, dhandler_ley, dhandler_rel, $FILE_NAME, misParametros,$FIRMA_CONECTA);
-//	 	crearXMLPlus.c_XML(dhandler_det, dhandler_cab, dhandler_aca, dhandler_ley, dhandler_rel, $FILE_NAME, misParametros,$FIRMA_CONECTA);
+	 	v21_envia_xmlB.c_XML($FILE_NAME, misParametros,$FIRMA_CONECTA);
+
+	 	
+	 	//	 	crearXMLPlus.c_XML(dhandler_det, dhandler_cab, dhandler_aca, dhandler_ley, dhandler_rel, $FILE_NAME, misParametros,$FIRMA_CONECTA);
 //	 	crearXML.c_XML(dhandler_det, dhandler_cab, dhandler_aca, dhandler_ley, dhandler_rel, $FILE_NAME, misParametros,$FIRMA_CONECTA);
 	}
 	

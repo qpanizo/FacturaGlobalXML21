@@ -645,8 +645,25 @@ public class v21crearXMLcustom20 {
 			myParam[_x]="";
 		}
 
+		
+		
+		   
+	    String OS = System.getProperty("os.name").toLowerCase();
+	    System.out.println(OS);
+	   
+	    
+	    
+	    String _ruta_param="";
+	    
+	    if (OS.substring(0,3).equals("win")) {
+	    	_ruta_param=_path+_win+"data"+_win+$RUC+_win+"certificados"+_win+$RUC+"-llaves.txt";
+	    } else {
+	    	_ruta_param=_path+_lin+"data"+_lin+$RUC+_lin+"certificados"+_lin+$RUC+"-llaves.txt";
+	    }
+	    
+		
 
-		String _ruta_param=_path+_win+"data"+_win+$RUC+_win+"certificados"+_lin+$RUC+"-llaves.txt";
+	
 		readParam(_ruta_param);
 
 
@@ -694,8 +711,9 @@ public class v21crearXMLcustom20 {
 			codigo417.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_417,_contenido_qr);
 			codigoHash.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_HASH);
 
+			System.out.println("Conecta:"+_firma_conecta);
 
-			if (_firma_conecta.equals("C")) {
+			if (_firma_conecta.substring(0,1).equals("C")) {
 				System.out.println("CONEXION A SUNAT...");
 				H_main.conectar($FILE_NAME,misParametros);
 			}
@@ -979,6 +997,9 @@ public class v21crearXMLcustom20 {
 		Attr attr_xmlns_xsi = document.createAttribute("xmlns:xsi");
 		attr_xmlns_xsi.setValue("http://www.w3.org/2001/XMLSchema-instance");
 		element.setAttributeNode(attr_xmlns_xsi);
+		
+		
+		
 
 
 		// definicion de variables 
@@ -988,7 +1009,7 @@ public class v21crearXMLcustom20 {
 		System.out.println("RESUMEN DE DOCUMENTO");
 		System.out.println("");
 
-		double _base_gravable=myCabecera.get_tot_vta_gra()-myCabecera.get_desc_glo();
+		double _base_gravable=myCabecera.get_tot_vta_gra();    //-myCabecera.get_desc_glo();
 		double _base_exonerada=myCabecera.get_tot_vta_exo();
 		double _base_inafecta=myCabecera.get_tot_vta_in();
 
@@ -1083,14 +1104,96 @@ public class v21crearXMLcustom20 {
 		element.appendChild(UBLExtensions);
 
 		/// NODO UBLExtensio
-		//		Element UBLExtension = document.createElement("ext:UBLExtension");
-		//		UBLExtensions.appendChild(UBLExtension);
+		
 
-		/// NODO ext:ExtensionContent
-		//		Element ExtensionContent = document.createElement("ext:ExtensionContent");
-		//		UBLExtension.appendChild(ExtensionContent);
+		
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat simple_hora = new SimpleDateFormat("HH:mm:ss");
+		String _hora = simple_hora.format(cal.getTime());
 
 
+		
+		
+		// contingencias
+		if ($SERIE.substring(0,1).equals("0")) {
+			
+		
+			Element UBLExtension = document.createElement("ext:UBLExtension");
+			UBLExtensions.appendChild(UBLExtension);
+
+			// NODO ext:ExtensionContent
+			Element ExtensionContent = document.createElement("ext:ExtensionContent");
+			UBLExtension.appendChild(ExtensionContent);
+						
+		
+
+			
+			// sac:AdditionalData
+			Element AdditionalInformation = document.createElement("AdditionalData");
+			ExtensionContent.appendChild(AdditionalInformation);
+
+			
+			// DataItem
+			Element DataItem0 = document.createElement("DataItem");
+			AdditionalInformation.appendChild(DataItem0);
+
+			
+			// code=hora
+			Element indicadorContingencia = document.createElement("code");
+			indicadorContingencia.appendChild(document.createTextNode("indicadorContingencia"));
+			DataItem0.appendChild(indicadorContingencia);
+
+
+			// value
+			Element indicadorContingencia_value = document.createElement("Value");
+			indicadorContingencia_value.appendChild(document.createTextNode("true"));
+			DataItem0.appendChild(indicadorContingencia_value);
+
+
+			
+			
+			
+			
+			
+			
+			// DataItem
+			Element DataItem = document.createElement("DataItem");
+			AdditionalInformation.appendChild(DataItem);
+
+			
+			// code=hora
+			Element code_hora = document.createElement("code");
+			code_hora.appendChild(document.createTextNode("hora"));
+			DataItem.appendChild(code_hora);
+
+
+			// value
+			Element hora_value = document.createElement("Value");
+			hora_value.appendChild(document.createTextNode($HORA));
+			DataItem.appendChild(hora_value);
+
+
+			
+			
+			// DataItem
+			Element DataItem2 = document.createElement("DataItem");
+			AdditionalInformation.appendChild(DataItem2);
+
+			
+			// code=hora
+			Element code_pago = document.createElement("code");
+			code_pago.appendChild(document.createTextNode("condicionPago"));
+			DataItem2.appendChild(code_pago);
+
+
+			// value
+			Element pago_value = document.createElement("Value");
+			pago_value.appendChild(document.createTextNode("AL CONTADO"));
+			DataItem2.appendChild(pago_value);
+
+			
+			
+		}
 
 
 		// sac:AdditionalInformation
@@ -1199,21 +1302,19 @@ public class v21crearXMLcustom20 {
 		fecEmision.appendChild(document.createTextNode(myCabecera.get_fecha()));
 		element.appendChild(fecEmision);
 
+		
+		
+		Element hora = document.createElement("cbc:IssueTime");
+		hora.appendChild(document.createTextNode($HORA));
+		element.appendChild(hora);
+
 		///////////////////////////////////////////////// FIN NUMERO 1 -- fecEmision	
 
 
 
 		/// NODO NUMERO 1  FECHA DE EMISION DEL DOCUMENTO -- fecEmision --- /Invoice/cbc:IssueDate 
 
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat simple_hora = new SimpleDateFormat("HH:mm:ss");
-		String _hora = simple_hora.format(cal.getTime());
-
-
-		Element hora = document.createElement("cbc:IssueTime");
-		hora.appendChild(document.createTextNode($HORA));
-		element.appendChild(hora);
-
+		
 		///////////////////////////////////////////////// FIN NUMERO 1 -- fecEmision	
 
 
@@ -1310,12 +1411,12 @@ public class v21crearXMLcustom20 {
 		////////////////////////////////////////////////////////////////////
 		// cbc:DueDate
 
-		//		if (!myAca.get_fecVencimiento().equals("")) {
-		//			Element DueDate = document.createElement("cbc:DueDate");
-		//			DueDate.appendChild(document.createTextNode(myAca.get_fecVencimiento()));
-		//			element.appendChild(DueDate);
+	//			if (!myAca.get_fecVencimiento().equals(myCabecera.get_fecha()) && !myAca.get_fecVencimiento().equals(""))  {
+	//				Element DueDate = document.createElement("cbc:DueDate");
+	//				DueDate.appendChild(document.createTextNode(myAca.get_fecVencimiento()));
+	//				element.appendChild(DueDate);
 
-		//		}
+	//			}
 
 
 
@@ -2020,12 +2121,97 @@ public class v21crearXMLcustom20 {
 		//		if (myCabecera.get_desc_glo()>0) {
 
 
+		
+		
+	// determinar base del descuento
+	double _base_descuento=myCabecera.get_tot_vta_exo()+
+			myCabecera.get_tot_vta_gra()+
+			myCabecera.get_tot_vta_in()+myCabecera.get_desc_glo();
+
+	
+	
+	if (myCabecera.get_desc_glo()!=0) {
 
 		
+		
+		double _porcentaje_descuento=myCabecera.get_desc_glo()/_base_descuento;
+
+		 
+		Element AllowanceCharge_header = document.createElement("cac:AllowanceCharge");
+		element.appendChild(AllowanceCharge_header);
+
+
+		// cbc:ChargeIndicator
+		Element ChargeIndicator_Header = document.createElement("cbc:ChargeIndicator");
+		ChargeIndicator_Header.appendChild(document.createTextNode("false"));
+		AllowanceCharge_header.appendChild(ChargeIndicator_Header);
+
+
+		// cbc:AllowanceChargeReasonCode
+		Element AllowanceChargeReasonCode = document.createElement("cbc:AllowanceChargeReasonCode");
+		AllowanceChargeReasonCode.appendChild(document.createTextNode("02"));
+		AllowanceCharge_header.appendChild(AllowanceChargeReasonCode);
+
+		
+		// listName="Cargo/descuento" 
+		Attr attr_AllowanceChargeReasonCode_listName = document.createAttribute("listName");	
+		attr_AllowanceChargeReasonCode_listName.setValue("Cargo/descuento");
+		AllowanceChargeReasonCode.setAttributeNode(attr_AllowanceChargeReasonCode_listName);
+
+		
+		// listAgencyName="PE:SUNAT"
+		Attr attr_AllowanceChargeReasonCode_listAgencyName = document.createAttribute("listAgencyName");	
+		attr_AllowanceChargeReasonCode_listAgencyName.setValue("PE:SUNAT");
+		AllowanceChargeReasonCode.setAttributeNode(attr_AllowanceChargeReasonCode_listAgencyName);
+		
+		
+		//listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo53"
+		Attr attr_AllowanceChargeReasonCode_listURI = document.createAttribute("listURI");	
+		attr_AllowanceChargeReasonCode_listURI.setValue("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo53");
+		AllowanceChargeReasonCode.setAttributeNode(attr_AllowanceChargeReasonCode_listURI);
+				
+
+
+		//cbc:MultiplierFactorNumeric
+		Element MultiplierFactorNumeric = document.createElement("cbc:MultiplierFactorNumeric");
+		MultiplierFactorNumeric.appendChild(document.createTextNode(""+_porcentaje_descuento));
+		AllowanceCharge_header.appendChild(MultiplierFactorNumeric);
+
+
+
+		// cbc:Amount
+		Element Amount_Descuento = document.createElement("cbc:Amount");
+		Amount_Descuento.appendChild(document.createTextNode(""+myCabecera.get_desc_glo()));
+		AllowanceCharge_header.appendChild(Amount_Descuento);
+
+
+		// currencyID="PEN"
+		
+		Attr attr_Amount_Descuento_Moneda = document.createAttribute("currencyID");	
+		attr_Amount_Descuento_Moneda.setValue(myCabecera.get_moneda());
+		Amount_Descuento.setAttributeNode(attr_Amount_Descuento_Moneda);
+
+
+		
+		// cbc:BaseAmount
+		Element Amount_Base_Descuento = document.createElement("cbc:BaseAmount");
+		Amount_Base_Descuento.appendChild(document.createTextNode(""+Formato._xml(_base_descuento)));
+		AllowanceCharge_header.appendChild(Amount_Base_Descuento);
+
+		
+		// currencyID="PEN"
+		Attr attr_Amount_Base_Descuento_Moneda = document.createAttribute("currencyID");	
+		attr_Amount_Base_Descuento_Moneda.setValue(myCabecera.get_moneda());
+		Amount_Base_Descuento.setAttributeNode(attr_Amount_Base_Descuento_Moneda);
+
 
 		
 		
 		
+	}
+
+
+			
 
 
 
@@ -3208,7 +3394,7 @@ public class v21crearXMLcustom20 {
 
 			// cbc:PriceAmount
 			Element PriceAmount_item = document.createElement("cbc:PriceAmount");
-			PriceAmount_item.appendChild(document.createTextNode(Formato._xml6(myDetalle[linea].get_valor_unit())));
+			PriceAmount_item.appendChild(document.createTextNode(Formato._xml10(myDetalle[linea].get_valor_unit())));
 			Price_item.appendChild(PriceAmount_item);
 
 
