@@ -250,6 +250,19 @@ public class questioner_nc {
 
 
         
+        
+        // armar _ruta_hash
+        if (_os.equals("win")) {
+        	_ruta_hash=_path+_win+"data"+_win+_ruc_param+_win+"09_hash"+_win;
+        }
+        if (_os.equals("linux")) {
+        	_ruta_hash=_path+_lin+"data"+_lin+_ruc_param+_lin+"09_hash"+_lin;
+        }        
+        misParametros.set_ruta_hash(_ruta_hash);
+ 
+        
+        
+        
 
         // armar _RUTA_417
         if (_os.equals("win")) {

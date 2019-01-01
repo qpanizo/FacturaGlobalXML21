@@ -417,6 +417,8 @@ public class v21_enviar_xml {
 	// 	DataSource ds_rel = new ByteArrayDataSource(is_rel,"application/octet-stream");
 	// 	DataHandler dhandler_rel = new DataHandler(ds_rel);
 	 	
+   	  
+   	    
 	 	v21_envia_xmlB.c_XML($FILE_NAME, misParametros,$FIRMA_CONECTA);
 
 	 	

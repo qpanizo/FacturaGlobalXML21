@@ -134,6 +134,7 @@ public class crearXML_nc {
 		$PATH_CANTIDAD_LETRAS=misParametros.get_ruta_cantidad_en_letras();
 		$PATH_QR=misParametros.get_ruta_qr();
 		$PATH_417=misParametros.get_ruta_417();
+		$PATH_HASH=misParametros.get_ruta_hash();
 
 
 
@@ -536,7 +537,7 @@ public class crearXML_nc {
 
 
 
-			String _contenido_qr = $RUC+"|"+$TIPO_DOCUMENTO+"|"+$SERIE+"|"+$NUMERO+"|"+$SUM_IGV+"|"+
+			String _contenido_qr = $RUC+"|"+"07"+"|"+$SERIE+"|"+$NUMERO+"|"+$SUM_IGV+"|"+
 					myCabecera_nc.get_importe_tot()+"|"+myCabecera_nc.get_fecha()+"|"+
 					myCabecera_nc.get_ident()+"|"+myCabecera_nc.get_num_ident();
 
@@ -553,7 +554,7 @@ public class crearXML_nc {
 			Firma_Documento.firmar($PATH_SIN_FIRMA,$PATH_CON_FIRMA,$FILE_NAME,misParametros);
 			codigoQR.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_QR,_contenido_qr);
 			codigo417.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_417,_contenido_qr);
-
+			codigoHash.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_HASH);
 
 
 

@@ -50,6 +50,7 @@ public class codigoQR_plus {
 			  double _SUM_IGV=0;
 			  double _TOTAL=0;
 			  String _FECHA="";
+			  String _RUC_RECEPTOR="";
 			  
 			  
 			  
@@ -64,7 +65,11 @@ public class codigoQR_plus {
 				// cbc:PayableAmount
 				NodeList nList_PayableAmount = doc.getElementsByTagName("cbc:PayableAmount");
 				Node nNode_PayableAmount = nList_PayableAmount.item(0);
+				try {
 				_TOTAL=Double.parseDouble(nNode_PayableAmount.getTextContent());
+		  		} catch (Exception f) {
+		  			
+		  		}
 				
 
 				// cbc:IssueDate
@@ -74,7 +79,13 @@ public class codigoQR_plus {
 
 				NodeList nodeList_AccountingCustomerParty = doc.getElementsByTagName("cac:AccountingCustomerParty").item(0).getChildNodes();
 				Node nNode_AccountingCustomerParty = nodeList_AccountingCustomerParty.item(0);
-				String _RUC_RECEPTOR=nNode_AccountingCustomerParty.getTextContent().substring(0, 11);
+				try {
+					_RUC_RECEPTOR=nNode_AccountingCustomerParty.getTextContent().substring(0, 11);
+			  		} catch (Exception f) {
+			  			
+			  		}
+				
+				
 			  
 				String _contenido_qr = _RUC+"|"+_TIPO_DOCUMENTO+"|"+_SERIE+"|"+_FOLIO+"|"+_SUM_IGV+"|"+_TOTAL+"|"+_FECHA+"|"+_TIPO_IDENT+"|"+_RUC_RECEPTOR;
 				

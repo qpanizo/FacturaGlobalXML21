@@ -1594,7 +1594,7 @@ public class v21crearXMLcustom20NC {
 
 		//cbc:Line
 		Element Line_RECEPTOR = document.createElement("cbc:Line");
-		Node cdataLine_RECEPTOR = document.createCDATASection($DIRECCION);
+		Node cdataLine_RECEPTOR = document.createCDATASection(myAca.get_desDireccionCliente());
 		Line_RECEPTOR.appendChild(cdataLine_RECEPTOR);
 		AddressLine_RECEPTOR.appendChild(Line_RECEPTOR);
 
@@ -1870,7 +1870,8 @@ public class v21crearXMLcustom20NC {
 
 			// cbc:LineExtensionAmount
 			Element LineExtensionAmount = document.createElement("cbc:LineExtensionAmount");
-			LineExtensionAmount.appendChild(document.createTextNode(Formato.GranDinero(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
+			// ""+Formato._xml(_base))
+			LineExtensionAmount.appendChild(document.createTextNode(Formato._xml(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
 			InvoiceLine.appendChild(LineExtensionAmount);
 
 			// currencyID
@@ -2006,7 +2007,7 @@ public class v21crearXMLcustom20NC {
 				TaxTotal_Detalle.appendChild(TaxSubtotal_detalle_Gra);
 				// cbc:TaxableAmount
 				Element TaxableAmount_detalle_Gra = document.createElement("cbc:TaxableAmount");
-				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato.GranDinero(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
+				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
 				TaxSubtotal_detalle_Gra.appendChild(TaxableAmount_detalle_Gra);
 				Attr Atr_TaxableAmount_detalle_Gra = document.createAttribute("currencyID");	
 				Atr_TaxableAmount_detalle_Gra.setValue(myCabecera_nc.get_moneda());
@@ -2424,12 +2425,18 @@ public class v21crearXMLcustom20NC {
 			Item.appendChild(SellersItemIdentification);
 
 
+			
+			
+			
 			//cbc:ID
 			Element SellersItemIdentification_ID = document.createElement("cbc:ID");
 			SellersItemIdentification_ID.appendChild(document.createTextNode(myDetalle[linea].get_producto()));
 			SellersItemIdentification.appendChild(SellersItemIdentification_ID);
 
 
+		
+
+			
 
 			// cac:Price
 			Element Price_item = document.createElement("cac:Price");
