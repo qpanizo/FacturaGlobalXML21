@@ -132,6 +132,8 @@ public class v21crearXMLcustom20 {
 	public static String $FILE_PATH_NAME_HASH="";
 	public static String $PATH_HASH="";
 	public static String $PORCENTAJE_IGV="";
+	public static double $_porcentaje_igv=0;
+	
 
 	public static String $HORA="00:00:00";
 	public static String $CORREO="";
@@ -160,6 +162,8 @@ public class v21crearXMLcustom20 {
 		$PATH_417=misParametros.get_ruta_417();
 		$PATH_LOGS=misParametros.get_ruta_logs();
 		$PORCENTAJE_IGV=misParametros.get_porcentaje_igv();
+		$_porcentaje_igv=Double.parseDouble($PORCENTAJE_IGV)/100; 
+		
 
 
 
@@ -587,7 +591,11 @@ public class v21crearXMLcustom20 {
 
 		$SUM_IGV=myCabecera.get_sum_igv();
 
+		
+		
+		
 		writeXML($FILE_NAME_XML);
+		
 
 		// aqui quitar las etiquetas de los atributos
 		//		String _xml_temp = readFile($FILE_NAME_XML);
@@ -2771,8 +2779,19 @@ public class v21crearXMLcustom20 {
 
 			double _isc_detalle=myDetalle[linea].get_isc_unit();
 			double _tot_trubutos_detalle=_igv_detalle+_isc_detalle;
-			String _tipo_igv=myDetalle[linea].get_afec_igv();
-			String _tipo_isc=myDetalle[linea].get_tipo_isc();
+			String _tipo_igv="";
+			String _tipo_isc="";
+			
+			if (myDetalle[linea].get_producto().equals(".")) {
+				_tot_trubutos_detalle=0;
+				_tipo_igv=myDetalle[linea].get_afec_igv();	
+				_tipo_isc=myDetalle[linea].get_tipo_isc();
+			} else {
+				_tipo_igv=myDetalle[linea].get_afec_igv();	
+				_tipo_isc=myDetalle[linea].get_tipo_isc();
+				
+			}
+			
 			double _price_amount=0;
 
 			if (myDetalle[linea].get_igv_unit()>0) {
@@ -2807,8 +2826,18 @@ public class v21crearXMLcustom20 {
 
 			// alex
 			// cbc:LineExtensionAmount
+			
+			double _lineExtensionAmount = 0;
+			
 			Element LineExtensionAmount = document.createElement("cbc:LineExtensionAmount");
-			double _lineExtensionAmount = (myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())-myDetalle[linea].get_desc_unit();
+			
+			if (myDetalle[linea].get_producto().equals(".")) {
+
+			} else {
+				_lineExtensionAmount = (myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())-myDetalle[linea].get_desc_unit();	
+			}
+				
+			
 
 			LineExtensionAmount.appendChild(document.createTextNode(Formato._xml(_lineExtensionAmount )));
 			InvoiceLine.appendChild(LineExtensionAmount);
@@ -2918,6 +2947,52 @@ public class v21crearXMLcustom20 {
 
 
 
+			} else {
+
+				Element AllowanceCharge_Detail = document.createElement("cac:AllowanceCharge");
+				InvoiceLine.appendChild(AllowanceCharge_Detail);
+
+				// cbc:ChargeIndicator
+				Element ChargeIndicator = document.createElement("cbc:ChargeIndicator");
+				ChargeIndicator.appendChild(document.createTextNode("false"));
+				AllowanceCharge_Detail.appendChild(ChargeIndicator);
+
+				// cbc:AllowanceChargeReasonCode
+				Element AllowanceChargeReasonCode_01 = document.createElement("cbc:AllowanceChargeReasonCode");
+				AllowanceChargeReasonCode_01.appendChild(document.createTextNode("00"));
+				AllowanceCharge_Detail.appendChild(AllowanceChargeReasonCode_01);
+
+
+				double _MultiplierFactorNumeric=myDetalle[linea].get_desc_unit()/(myDetalle[linea].get_cantidad()*myDetalle[linea].get_valor_unit());
+
+
+				// cbc:MultiplierFactorNumeric
+				Element MultiplierFactorNumeric_01 = document.createElement("cbc:MultiplierFactorNumeric");
+				MultiplierFactorNumeric_01.appendChild(document.createTextNode(Formato._xml(0)));
+				AllowanceCharge_Detail.appendChild(MultiplierFactorNumeric_01);
+
+				// cbc:Amount 
+				Element Amount_Detail = document.createElement("cbc:Amount");
+				Amount_Detail.appendChild(document.createTextNode(""+Formato._xml(0)));
+				AllowanceCharge_Detail.appendChild(Amount_Detail);
+
+				// currencyID
+				Attr Atr_descuento_Detail = document.createAttribute("currencyID");	
+				Atr_descuento_Detail.setValue(myCabecera.get_moneda());
+				Amount_Detail.setAttributeNode(Atr_descuento_Detail);
+
+				// cbc:BaseAmount 
+				Element BaseAmount_Detail = document.createElement("cbc:BaseAmount");
+				BaseAmount_Detail.appendChild(document.createTextNode(""+Formato._xml(0)));
+				AllowanceCharge_Detail.appendChild(BaseAmount_Detail);
+
+				// currencyID
+				Attr Atr_Base_descuento_Detail = document.createAttribute("currencyID");	
+				Atr_Base_descuento_Detail.setValue(myCabecera.get_moneda());
+				BaseAmount_Detail.setAttributeNode(Atr_Base_descuento_Detail);
+
+				
+				
 			}
 
 
@@ -2946,7 +3021,12 @@ public class v21crearXMLcustom20 {
 				TaxTotal_Detalle.appendChild(TaxSubtotal_detalle_Gra);
 				// cbc:TaxableAmount
 				Element TaxableAmount_detalle_Gra = document.createElement("cbc:TaxableAmount");
-				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml((myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())-myDetalle[linea].get_desc_unit())));
+				if (myDetalle[linea].get_producto().equals(".")) {
+					TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml(0)));
+				} else {
+					TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml((myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())-myDetalle[linea].get_desc_unit())));					
+				}
+			
 				TaxSubtotal_detalle_Gra.appendChild(TaxableAmount_detalle_Gra);
 				Attr Atr_TaxableAmount_detalle_Gra = document.createAttribute("currencyID");	
 				Atr_TaxableAmount_detalle_Gra.setValue(myCabecera.get_moneda());
@@ -3433,6 +3513,7 @@ public class v21crearXMLcustom20 {
 				TaxTotal_Detalle.appendChild(TaxSubtotal_detalle_Gra);
 				// cbc:TaxableAmount
 				Element TaxableAmount_detalle_Gra = document.createElement("cbc:TaxableAmount");
+		//		TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml(_lineExtensionAmount)));
 				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml(0)));
 				TaxSubtotal_detalle_Gra.appendChild(TaxableAmount_detalle_Gra);
 				Attr Atr_TaxableAmount_detalle_Gra = document.createAttribute("currencyID");	
@@ -3440,7 +3521,8 @@ public class v21crearXMLcustom20 {
 				TaxableAmount_detalle_Gra.setAttributeNode(Atr_TaxableAmount_detalle_Gra);
 				// cbc:TaxAmount 
 				Element TaxAmount_detalle_Gra = document.createElement("cbc:TaxAmount");
-				TaxAmount_detalle_Gra.appendChild(document.createTextNode(""+_igv_detalle));
+			//	TaxAmount_detalle_Gra.appendChild(document.createTextNode(""+_igv_detalle));
+				TaxAmount_detalle_Gra.appendChild(document.createTextNode(""+0.00));
 				TaxSubtotal_detalle_Gra.appendChild(TaxAmount_detalle_Gra);
 				Attr Atr_TaxAmount_detalle_Gra = document.createAttribute("currencyID");	
 				Atr_TaxAmount_detalle_Gra.setValue(myCabecera.get_moneda());

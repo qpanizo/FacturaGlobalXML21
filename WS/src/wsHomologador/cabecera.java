@@ -23,6 +23,8 @@ public class cabecera {
 	public String _guia;
 	public String _orden_de_compra;
 	public String _email;
+	public String _ubigeo;
+	
 	
 	
 		
@@ -42,6 +44,12 @@ public class cabecera {
 	
 	
 	
+	public String get_ubigeo() {
+		return _ubigeo;
+	}
+	public void set_ubigeo(String _ubigeo) {
+		this._ubigeo = _ubigeo;
+	}
 	public String get_orden_de_compra() {
 		return _orden_de_compra;
 	}

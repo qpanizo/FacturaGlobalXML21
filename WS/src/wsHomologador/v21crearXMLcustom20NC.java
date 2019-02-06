@@ -1252,6 +1252,10 @@ public class v21crearXMLcustom20NC {
 		DocumentCurrencyCode.setAttribute("listName", "Currency");
 
 
+		
+		
+		
+		
 
 		//cac:DiscrepancyResponse
 		Element DiscrepancyResponse = document.createElement("cac:DiscrepancyResponse");
@@ -1290,11 +1294,59 @@ public class v21crearXMLcustom20NC {
 		Element ID_DocumentReference = document.createElement("cbc:ID");
 		InvoiceDocumentReference.appendChild(ID_DocumentReference);
 		ID_DocumentReference.setTextContent(myCabecera_nc.get_num_doc_afec());
+		
+		
+		for (int linea=1; linea<_counterRel; linea++) {	
+
+
+			if (mydocumentos_relacionados[linea].get_indDocRelacionado().equals("99")) {
+				// cac:DespatchDocumentReference
+				////////////////////////////////////////////////////////////////////
+				// /Invoice/cac:AdditionalDocumentReference/cbc:ID	
+				Element Despatch = document.createElement("cac:AdditionalDocumentReference");
+				element.appendChild(Despatch);
+
+				// cbc:ID
+				Element _ID_Despatch = document.createElement("cbc:ID");
+				//		_ID_Despatch.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_numDocEmisor()));
+				System.out.println(mydocumentos_relacionados[linea].get_numDocEmisor());
+
+				//		public String _indDocRelacionado;   // Indicador de documento relacionado (1: Guía, 2: Anticipo, 3: Orden de compra, 98: Documentos afectados (múltiples) por una Nota de Crédito / Débido,  99: Otros)
+				//		public String _numIdeAnticipo;       // 	 Número identificador del anticipo (solo para el Caso: 2 Anticipo). PREDETERMINADO "-"
+				//		public String _tipDocRelacionado;   //  Tipo de documento relacionado  Si es documento relacionado es: Guía / Documento Afectado: Catálogo N° 1/
+				//		public String _numDocRelacionado;   // Número de documento relacionado aqui va el valor que varia o el dato que queremos mostrar en el xml
+				//		public String _tipDocEmisor;         //  Tipo de documento del emisor del documento relacionado  ( 1 6 )
+				//		public String _numDocEmisor;		// Número de documento del emisor del documento relacionado
+				//		public String _mtoDocRelacionado;    // Monto
+
+
+				_ID_Despatch.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_numDocRelacionado()));					
+				Despatch.appendChild(_ID_Despatch);
+
+				//			// cbc:DocumentTypeCode  _tipDocRelacionado
+
+
+				Element DocumentTypeCode = document.createElement("cbc:DocumentTypeCode");
+				DocumentTypeCode.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_tipDocRelacionado()));
+				Despatch.appendChild(DocumentTypeCode);
+
+
+			}
+
+		}
+
+
+		
+		
+		
+		
 
 		//cbc:DocumentTypeCode
 		Element DocumentTypeCode = document.createElement("cbc:DocumentTypeCode");
 		InvoiceDocumentReference.appendChild(DocumentTypeCode);
 		DocumentTypeCode.setTextContent(myCabecera_nc.get_tipo_op());
+
+
 
 
 
