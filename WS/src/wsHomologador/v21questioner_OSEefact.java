@@ -18,7 +18,7 @@ import org.apache.soap.util.mime.ByteArrayDataSource;
 // CLASE PARA EMITIR DOCUMENTOS GRAVADOS 
 //                   DOCUMENTOS EXONERADOR
 
-public class v21questionerOSEefact {
+public class v21questioner_OSEefact {
 	
 	public static String[] myParam = new String[1];
 	
@@ -418,7 +418,7 @@ public class v21questionerOSEefact {
 	 	DataSource ds_rel = new ByteArrayDataSource(is_rel,"application/octet-stream");
 	 	DataHandler dhandler_rel = new DataHandler(ds_rel);
 	 	
-	 	v21crearXMLOSEefact.c_XML(dhandler_det, dhandler_cab, dhandler_aca, dhandler_ley, dhandler_rel, $FILE_NAME, misParametros,$FIRMA_CONECTA);
+	 	v21crearXML_OSEefact.c_XML(dhandler_det, dhandler_cab, dhandler_aca, dhandler_ley, dhandler_rel, $FILE_NAME, misParametros,$FIRMA_CONECTA);
 //	 	crearXMLPlus.c_XML(dhandler_det, dhandler_cab, dhandler_aca, dhandler_ley, dhandler_rel, $FILE_NAME, misParametros,$FIRMA_CONECTA);
 //	 	crearXML.c_XML(dhandler_det, dhandler_cab, dhandler_aca, dhandler_ley, dhandler_rel, $FILE_NAME, misParametros,$FIRMA_CONECTA);
 	}

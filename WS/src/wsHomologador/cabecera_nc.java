@@ -19,6 +19,17 @@ public class cabecera_nc {
 	public double  _sum_isc;	   // 15 Sumatoria ISC
 	public double  _sum_otros;	   // 16 Sumatoria otros tributos
 	public double  _importe_tot;   // 17 Importe total de la venta, cesión en uso o del servicio prestado
+	public String _ubigeo;
+	
+	
+	
+	
+	public String get_ubigeo() {
+		return _ubigeo;
+	}
+	public void set_ubigeo(String _ubigeo) {
+		this._ubigeo = _ubigeo;
+	}
 	public String get_fecha() {
 		return _fecha;
 	}

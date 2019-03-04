@@ -1594,7 +1594,7 @@ public class v21crearXMLcustom20ND {
 
 		//cbc:Line
 		Element Line_RECEPTOR = document.createElement("cbc:Line");
-		Node cdataLine_RECEPTOR = document.createCDATASection($DIRECCION);
+		Node cdataLine_RECEPTOR = document.createCDATASection(myAca.get_desDireccionCliente());
 		Line_RECEPTOR.appendChild(cdataLine_RECEPTOR);
 		AddressLine_RECEPTOR.appendChild(Line_RECEPTOR);
 

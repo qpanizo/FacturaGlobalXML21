@@ -46,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 //@XmlRootElement(name = "cbc:InvoiceTypeCode")
 //@XmlType(name="cbc:InvoiceTypeCode",propOrder={"listAgencyName","listName","listURI","listID","name","listSchemeURI"})
 
-public class v21crearXMLcustom20NC {
+public class v21crearXMLcustom20ND_OSEefact {
 
 	public static String[] myParam = new String[300];
 
@@ -708,25 +708,25 @@ public class v21crearXMLcustom20NC {
 
 
 		if (permiso) {
-			Firma_Documento.firmar($PATH_SIN_FIRMA,$PATH_CON_FIRMA,$FILE_NAME,misParametros);
+		//	Firma_Documento.firmar($PATH_SIN_FIRMA,$PATH_CON_FIRMA,$FILE_NAME,misParametros);
 
 
 
 
-			String _contenido_qr = $RUC+"|"+$TIPO_DOCUMENTO+"|"+$SERIE+"|"+$NUMERO+"|"+$SUM_IGV+"|"+
-					myCabecera_nc.get_importe_tot()+"|"+myCabecera_nc.get_fecha()+"|"+
-					myCabecera_nc.get_ident()+"|"+myCabecera_nc.get_num_ident();
+		//	String _contenido_qr = $RUC+"|"+$TIPO_DOCUMENTO+"|"+$SERIE+"|"+$NUMERO+"|"+$SUM_IGV+"|"+
+		//		myCabecera_nc.get_importe_tot()+"|"+myCabecera_nc.get_fecha()+"|"+
+		//			myCabecera_nc.get_ident()+"|"+myCabecera_nc.get_num_ident();
 
 
 
-			codigoQR.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_QR,_contenido_qr);
-			codigo417.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_417,_contenido_qr);
-			codigoHash.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_HASH);
+		//	codigoQR.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_QR,_contenido_qr);
+		//	codigo417.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_417,_contenido_qr);
+		//	codigoHash.get($FILE_PATH_NAME_XML,$FILE_PATH_NAME_HASH);
 
 
 			if (_firma_conecta.equals("C")) {
-				System.out.println("CONEXION A SUNAT...");
-				H_main.conectar($FILE_NAME,misParametros);
+		//		System.out.println("CONEXION A SUNAT...");
+		//		H_main.conectar($FILE_NAME,misParametros);
 			}
 
 		}
@@ -940,13 +940,13 @@ public class v21crearXMLcustom20NC {
 
 
 		// agregamos la nombre pricipal dentro de este iran todos los elementos
-		Element element = document.createElement("CreditNote");
+		Element element = document.createElement("DebitNote");
 		document.appendChild(element);
 
 
 		// xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
 		Attr attr_xmlns = document.createAttribute("xmlns");
-		attr_xmlns.setValue("urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2");
+		attr_xmlns.setValue("urn:oasis:names:specification:ubl:schema:xsd:DebitNote-2");
 		element.setAttributeNode(attr_xmlns);
 
 		// xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
@@ -1252,10 +1252,11 @@ public class v21crearXMLcustom20NC {
 		DocumentCurrencyCode.setAttribute("listName", "Currency");
 
 
-		
-		
-		
-		
+		// cbc:LineCountNumeric
+		Element LineCountNumeric = document.createElement("cbc:LineCountNumeric");
+		LineCountNumeric.appendChild(document.createTextNode(""+_lineas));
+		element.appendChild(LineCountNumeric);
+
 
 		//cac:DiscrepancyResponse
 		Element DiscrepancyResponse = document.createElement("cac:DiscrepancyResponse");
@@ -1272,6 +1273,10 @@ public class v21crearXMLcustom20NC {
 		Element ResponseCode = document.createElement("cbc:ResponseCode");
 		DiscrepancyResponse.appendChild(ResponseCode);
 		ResponseCode.setTextContent(myCabecera_nc.get_tipo_nota_cre());
+		ResponseCode.setAttribute("listAgencyName", "PE:SUNAT");
+		ResponseCode.setAttribute("listName", "Tipo de nota de credito");
+		ResponseCode.setAttribute("listURI", "urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo09");
+
 
 		// cbc:Description
 		Element Description = document.createElement("cbc:Description");
@@ -1294,60 +1299,19 @@ public class v21crearXMLcustom20NC {
 		Element ID_DocumentReference = document.createElement("cbc:ID");
 		InvoiceDocumentReference.appendChild(ID_DocumentReference);
 		ID_DocumentReference.setTextContent(myCabecera_nc.get_num_doc_afec());
+
+		ID_DocumentReference.setAttribute("cbc:IssueDate", myCabecera_nc.get_fecha());
 		
-		
-		for (int linea=1; linea<_counterRel; linea++) {	
-
-
-			if (mydocumentos_relacionados[linea].get_indDocRelacionado().equals("99")) {
-				// cac:DespatchDocumentReference
-				////////////////////////////////////////////////////////////////////
-				// /Invoice/cac:AdditionalDocumentReference/cbc:ID	
-				Element Despatch = document.createElement("cac:AdditionalDocumentReference");
-				element.appendChild(Despatch);
-
-				// cbc:ID
-				Element _ID_Despatch = document.createElement("cbc:ID");
-				//		_ID_Despatch.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_numDocEmisor()));
-				System.out.println(mydocumentos_relacionados[linea].get_numDocEmisor());
-
-				//		public String _indDocRelacionado;   // Indicador de documento relacionado (1: Guía, 2: Anticipo, 3: Orden de compra, 98: Documentos afectados (múltiples) por una Nota de Crédito / Débido,  99: Otros)
-				//		public String _numIdeAnticipo;       // 	 Número identificador del anticipo (solo para el Caso: 2 Anticipo). PREDETERMINADO "-"
-				//		public String _tipDocRelacionado;   //  Tipo de documento relacionado  Si es documento relacionado es: Guía / Documento Afectado: Catálogo N° 1/
-				//		public String _numDocRelacionado;   // Número de documento relacionado aqui va el valor que varia o el dato que queremos mostrar en el xml
-				//		public String _tipDocEmisor;         //  Tipo de documento del emisor del documento relacionado  ( 1 6 )
-				//		public String _numDocEmisor;		// Número de documento del emisor del documento relacionado
-				//		public String _mtoDocRelacionado;    // Monto
-
-
-				_ID_Despatch.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_numDocRelacionado()));					
-				Despatch.appendChild(_ID_Despatch);
-
-				//			// cbc:DocumentTypeCode  _tipDocRelacionado
-
-
-				Element DocumentTypeCode = document.createElement("cbc:DocumentTypeCode");
-				DocumentTypeCode.appendChild(document.createTextNode(mydocumentos_relacionados[linea].get_tipDocRelacionado()));
-				Despatch.appendChild(DocumentTypeCode);
-
-
-			}
-
-		}
-
-
-		
-		
-		
-		
-
 		//cbc:DocumentTypeCode
 		Element DocumentTypeCode = document.createElement("cbc:DocumentTypeCode");
 		InvoiceDocumentReference.appendChild(DocumentTypeCode);
 		DocumentTypeCode.setTextContent(myCabecera_nc.get_tipo_op());
 
-
-
+		DocumentTypeCode.setAttribute("listAgencyName","PE:SUNAT");
+		DocumentTypeCode.setAttribute("listName", "Tipo de Documento");
+		DocumentTypeCode.setAttribute("listURI", "urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01");
+	
+	
 
 
 
@@ -1394,7 +1358,7 @@ public class v21crearXMLcustom20NC {
 
 		// id
 		Element Signature_ID = document.createElement("cbc:ID");
-		Signature_ID.appendChild(document.createTextNode($RUC));
+		Signature_ID.appendChild(document.createTextNode("IDSignKG"));
 		Signature.appendChild(Signature_ID);
 
 		// cac:SignatoryParty
@@ -1408,8 +1372,13 @@ public class v21crearXMLcustom20NC {
 
 		// id
 		Element PartyIdentification_ID = document.createElement("cbc:ID");
-		PartyIdentification_ID.appendChild(document.createTextNode($RUC));
+		PartyIdentification_ID.appendChild(document.createTextNode("#SignST"));
 		PartyIdentification.appendChild(PartyIdentification_ID);
+		
+		
+		
+		
+		
 
 		// cac:PartyName
 		Element PartyName_SIG = document.createElement("cac:PartyName");
@@ -1466,9 +1435,9 @@ public class v21crearXMLcustom20NC {
 		PartyIdentification_EMISOR.appendChild(PartyIdentification_ID_EMISOR);
 
 		PartyIdentification_ID_EMISOR.setAttribute("schemeID", "6");
-		//		PartyIdentification_ID_EMISOR.setAttribute("schemeName", "Documento de Identidad");
-		//		PartyIdentification_ID_EMISOR.setAttribute("schemeAgencyName", "PE:SUNAT");
-		//		PartyIdentification_ID_EMISOR.setAttribute("schemeURI", "urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06");
+		PartyIdentification_ID_EMISOR.setAttribute("schemeName", "Documento de Identidad");
+		PartyIdentification_ID_EMISOR.setAttribute("schemeAgencyName", "PE:SUNAT");
+		PartyIdentification_ID_EMISOR.setAttribute("schemeURI", "urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06");
 
 
 
@@ -1506,6 +1475,17 @@ public class v21crearXMLcustom20NC {
 		Element RegistrationAddress_EMISOR = document.createElement("cac:RegistrationAddress");
 		PartyLegalEntity_EMISOR.appendChild(RegistrationAddress_EMISOR);
 
+		// id ubigeo
+		Element RegistrationAddress_ID = document.createElement("cbc:ID");
+		RegistrationAddress_ID.appendChild(document.createTextNode($UBIGEO));
+		RegistrationAddress_EMISOR.appendChild(RegistrationAddress_ID);
+
+		//   <cbc:ID schemeAgencyName="PE:INEI" schemeName="Ubigeos">150131</cbc:ID> 
+
+		RegistrationAddress_ID.setAttribute("schemeAgencyName", "PE:INEI");
+		RegistrationAddress_ID.setAttribute("schemeName", " Ubigeos");
+
+		
 		// cbc:AddressTypeCode
 		Element AddressTypeCode_EMISOR = document.createElement("cbc:AddressTypeCode");
 		AddressTypeCode_EMISOR.appendChild(document.createTextNode("0000"));
@@ -1578,7 +1558,10 @@ public class v21crearXMLcustom20NC {
 		Element IdentificationCode_EMISOR = document.createElement("cbc:IdentificationCode");
 		IdentificationCode_EMISOR.appendChild(document.createTextNode($PAIS));
 		Country_EMISOR.appendChild(IdentificationCode_EMISOR);
-
+		IdentificationCode_EMISOR.setAttribute("listAgencyName", "United Nations Economic Commission for Europe");
+		IdentificationCode_EMISOR.setAttribute("listID", "ISO 3166-1");
+		IdentificationCode_EMISOR.setAttribute("listName", "Country");
+	
 
 
 
@@ -1646,11 +1629,23 @@ public class v21crearXMLcustom20NC {
 
 		//cbc:Line
 		Element Line_RECEPTOR = document.createElement("cbc:Line");
-		Node cdataLine_RECEPTOR = document.createCDATASection(myAca.get_desDireccionCliente());
+		Node cdataLine_RECEPTOR = document.createCDATASection($DIRECCION);
 		Line_RECEPTOR.appendChild(cdataLine_RECEPTOR);
 		AddressLine_RECEPTOR.appendChild(Line_RECEPTOR);
 
+		// cac:Country
+		Element Country_RECEPTOR = document.createElement("cac:Country");
+		RegistrationAddress_RECEPTOR.appendChild(Country_RECEPTOR);				
 
+
+		//cbc:IdentificationCode
+		Element IdentificationCode_RECEPTOR = document.createElement("cbc:IdentificationCode");
+		IdentificationCode_RECEPTOR.appendChild(document.createTextNode($PAIS));
+		Country_RECEPTOR.appendChild(IdentificationCode_RECEPTOR);
+		IdentificationCode_RECEPTOR.setAttribute("listAgencyName", "United Nations Economic Commission for Europe");
+		IdentificationCode_RECEPTOR.setAttribute("listID", "ISO 3166-1");
+		IdentificationCode_RECEPTOR.setAttribute("listName", "Country");
+	
 	
 
 
@@ -1803,60 +1798,7 @@ public class v21crearXMLcustom20NC {
 
 		
 		
-		// INAFECTAS ///
-		////////////////////////////////////////////////////////////////
-		// cac:TaxSubtotal
-		Element TaxSubtotal_Header_Ina = document.createElement("cac:TaxSubtotal");
-		TaxTotal_Header.appendChild(TaxSubtotal_Header_Ina);
-		// cbc:TaxableAmount
-		Element TaxableAmount_header_Ina = document.createElement("cbc:TaxableAmount");
-		TaxableAmount_header_Ina.appendChild(document.createTextNode(""+Formato._xml(_base_inafecta)));
-		TaxSubtotal_Header_Ina.appendChild(TaxableAmount_header_Ina);
-		Attr Atr_TaxableAmount_header_Ina = document.createAttribute("currencyID");	
-		Atr_TaxableAmount_header_Ina.setValue(myCabecera_nc.get_moneda());
-		TaxableAmount_header_Ina.setAttributeNode(Atr_TaxableAmount_header_Ina);
-		// cbc:TaxAmount 
-		Element TaxAmount_header_Ina = document.createElement("cbc:TaxAmount");
-		TaxAmount_header_Ina.appendChild(document.createTextNode(""+Formato._xml(0)));
-		TaxSubtotal_Header_Ina.appendChild(TaxAmount_header_Ina);
-		Attr Atr_TaxAmount_header_Ina = document.createAttribute("currencyID");	
-		Atr_TaxAmount_header_Ina.setValue(myCabecera_nc.get_moneda());
-		TaxAmount_header_Ina.setAttributeNode(Atr_TaxAmount_header_Ina);
-		// cac:TaxCategory
-		Element TaxCategory_header_Ina = document.createElement("cac:TaxCategory");
-		TaxSubtotal_Header_Ina.appendChild(TaxCategory_header_Ina);
-		// id
-		//	Element TaxCategory_header_ID0_Ina = document.createElement("cbc:ID");
-		//	TaxCategory_header_ID0_Ina.appendChild(document.createTextNode("S"));
-		//	TaxCategory_header_Ina.appendChild(TaxCategory_header_ID0_Ina);
-		//	TaxCategory_header_ID0_Ina.setAttribute("schemeID", "UN/ECE 5305");
-		//	TaxCategory_header_ID0_Ina.setAttribute("schemeName", "Tax Category Identifier");
-		//	TaxCategory_header_ID0_Ina.setAttribute("schemeAgencyName", "United Nations Economic Commission for Europe");
-		//cac:TaxScheme
-		Element TaxScheme_header_Ina = document.createElement("cac:TaxScheme");
-		TaxCategory_header_Ina.appendChild(TaxScheme_header_Ina);
-		// id
-		Element TaxScheme_header_id_Ina = document.createElement("cbc:ID");
-		TaxScheme_header_id_Ina.appendChild(document.createTextNode("9998"));
-		TaxScheme_header_Ina.appendChild(TaxScheme_header_id_Ina);
-		// schemeAgencyName="PE:SUNAT"
-		Attr Atr_schemeAgencyNameID_Ina = document.createAttribute("schemeAgencyName");	
-		Atr_schemeAgencyNameID_Ina.setValue("PE:SUNAT");
-		TaxScheme_header_id_Ina.setAttributeNode(Atr_schemeAgencyNameID_Ina);
-		TaxScheme_header_id_Ina.setAttribute("schemeID", "UN/ECE 5305");
-		TaxScheme_header_id_Ina.setAttribute("schemeAgencyID", "6");
-		// cbc:Name
-		Element TaxScheme_header_Name_Ina = document.createElement("cbc:Name");
-		TaxScheme_header_Name_Ina.appendChild(document.createTextNode("INA"));
-		TaxScheme_header_Ina.appendChild(TaxScheme_header_Name_Ina);
-		// cbc:TaxTypeCode
-		Element TaxScheme_header_TaxTypeCode_Ina = document.createElement("cbc:TaxTypeCode");
-		TaxScheme_header_TaxTypeCode_Ina.appendChild(document.createTextNode("FRE"));
-		TaxScheme_header_Ina.appendChild(TaxScheme_header_TaxTypeCode_Ina);
-		/////////////////////////////////////////////////////////// FIN DE INAFECTAS ///
-
-
-	
+			
 
 		
 		
@@ -1866,7 +1808,7 @@ public class v21crearXMLcustom20NC {
 
 
 		// cac:LegalMonetaryTotal
-		Element LegalMonetaryTotal_Header = document.createElement("cac:LegalMonetaryTotal");
+		Element LegalMonetaryTotal_Header = document.createElement("cac:RequestedMonetaryTotal");
 		element.appendChild(LegalMonetaryTotal_Header);
 
 		
@@ -1943,48 +1885,16 @@ public class v21crearXMLcustom20NC {
 			
 			// sacar la totallidad de los impouestos
 			double _igv_detalle=myDetalle[linea].get_igv_unit();
-			double _base_gravable_detalle=myDetalle[linea].get_precio_unit();
+			double _base_gravable_detalle=myDetalle[linea].get_cantidad()*myDetalle[linea].get_precio_unit();
 			double _isc_detalle=myDetalle[linea].get_isc_unit();
 			double _tot_trubutos_detalle=_igv_detalle+_isc_detalle;
 			String _tipo_igv=myDetalle[linea].get_afec_igv();
+			String _tipo_isc=myDetalle[linea].get_tipo_isc();
+			
 			double _total_linea=_base_gravable_detalle+_tot_trubutos_detalle;
 
-			
-			
-			
-			System.out.println("");
-			System.out.println("RESUMEN DE DOCUMENTO");
-			System.out.println("");
-
-			System.out.println("Cantidad________________"+Formato.neto(myDetalle[linea].get_cantidad()));
-			System.out.println("Precioa_________________"+Formato.neto(myDetalle[linea].get_precio_unit()));
-		
-			System.out.println("Base Gravable Detalle___"+Formato.neto(_base_gravable_detalle));
-	//		System.out.println("Base Exoneradas_________"+Formato.neto(_base_exonerada));				
-	//		System.out.println("Base Inafecta___________"+Formato.neto(_base_inafecta));
-	//		System.out.println("BASE TOTAL______________"+Formato.neto(_base));
-	//		System.out.println("");
-	
-
-
-			System.out.println("IGV Detalle_____________"+Formato.neto(_igv_detalle));				
-	//		System.out.println("ISC_____________________"+Formato.neto(_isc));
-
-	//		System.out.println("TOTAL IMPUESTOS_________"+Formato.neto(_impuestos));
-	//		System.out.println("Porcentaje de IGV_______        "+$PORCENTAJE_IGV+"%");
-
-			System.out.println("");
-
-
-
-
-			System.out.println("");
-			System.out.println("");
-
-			
-			
 			// cac:InvoiceLine
-			Element InvoiceLine = document.createElement("cac:CreditNoteLine");
+			Element InvoiceLine = document.createElement("cac:DebitNoteLine");
 			element.appendChild(InvoiceLine);		
 
 			// cbc:ID
@@ -1996,7 +1906,7 @@ public class v21crearXMLcustom20NC {
 
 			// CANTIDAD Y UNIDAD DE MEDIDA
 			// cbc:InvoicedQuantity 
-			Element InvoicedQuantity = document.createElement("cbc:CreditedQuantity");
+			Element InvoicedQuantity = document.createElement("cbc:DebitedQuantity");
 			InvoicedQuantity.appendChild(document.createTextNode(""+myDetalle[linea].get_cantidad()));
 			InvoiceLine.appendChild(InvoicedQuantity);
 
@@ -2007,11 +1917,7 @@ public class v21crearXMLcustom20NC {
 
 			// cbc:LineExtensionAmount
 			Element LineExtensionAmount = document.createElement("cbc:LineExtensionAmount");
-			// ""+Formato._xml(_base))
-			double	_lineExtensionAmount = (myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())-myDetalle[linea].get_desc_unit();
-			//_lineExtensionAmount= _lineExtensionAmount+myDetalle[linea].get_igv_unit();
-			
-			LineExtensionAmount.appendChild(document.createTextNode(Formato._xml(_lineExtensionAmount)));
+			LineExtensionAmount.appendChild(document.createTextNode(Formato.GranDinero(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
 			InvoiceLine.appendChild(LineExtensionAmount);
 
 			// currencyID
@@ -2147,7 +2053,7 @@ public class v21crearXMLcustom20NC {
 				TaxTotal_Detalle.appendChild(TaxSubtotal_detalle_Gra);
 				// cbc:TaxableAmount
 				Element TaxableAmount_detalle_Gra = document.createElement("cbc:TaxableAmount");
-				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml(_base_gravable_detalle)));
+				TaxableAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato.GranDinero(myDetalle[linea].get_valor_unit()*myDetalle[linea].get_cantidad())));
 				TaxSubtotal_detalle_Gra.appendChild(TaxableAmount_detalle_Gra);
 				Attr Atr_TaxableAmount_detalle_Gra = document.createAttribute("currencyID");	
 				Atr_TaxableAmount_detalle_Gra.setValue(myCabecera_nc.get_moneda());
@@ -2565,18 +2471,12 @@ public class v21crearXMLcustom20NC {
 			Item.appendChild(SellersItemIdentification);
 
 
-			
-			
-			
 			//cbc:ID
 			Element SellersItemIdentification_ID = document.createElement("cbc:ID");
 			SellersItemIdentification_ID.appendChild(document.createTextNode(myDetalle[linea].get_producto()));
 			SellersItemIdentification.appendChild(SellersItemIdentification_ID);
 
 
-		
-
-			
 
 			// cac:Price
 			Element Price_item = document.createElement("cac:Price");
