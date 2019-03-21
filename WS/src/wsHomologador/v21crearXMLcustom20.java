@@ -3315,7 +3315,7 @@ public class v21crearXMLcustom20 {
 				InvoiceLine.appendChild(TaxTotal_Detalle);
 				// cac:TaxAmount
 				Element TaxAmount_Detalle = document.createElement("cbc:TaxAmount");
-				TaxAmount_Detalle.appendChild(document.createTextNode(""+_tot_trubutos_detalle));
+				TaxAmount_Detalle.appendChild(document.createTextNode(""+Formato._xml(_tot_trubutos_detalle)));
 				TaxTotal_Detalle.appendChild(TaxAmount_Detalle);
 				Attr Atr_TaxableAmount_detalle_Gra01 = document.createAttribute("currencyID");	
 				Atr_TaxableAmount_detalle_Gra01.setValue(myCabecera.get_moneda());
@@ -3337,7 +3337,7 @@ public class v21crearXMLcustom20 {
 				TaxableAmount_detalle_Gra.setAttributeNode(Atr_TaxableAmount_detalle_Gra);
 				// cbc:TaxAmount 
 				Element TaxAmount_detalle_Gra = document.createElement("cbc:TaxAmount");
-				TaxAmount_detalle_Gra.appendChild(document.createTextNode(""+_igv_detalle));
+				TaxAmount_detalle_Gra.appendChild(document.createTextNode(""+Formato._xml(_igv_detalle)));
 				TaxSubtotal_detalle_Gra.appendChild(TaxAmount_detalle_Gra);
 				Attr Atr_TaxAmount_detalle_Gra = document.createAttribute("currencyID");	
 				Atr_TaxAmount_detalle_Gra.setValue(myCabecera.get_moneda());

@@ -802,23 +802,23 @@ public class crearXML_rd {
 
 			
 				//cac:AllowanceCharge				
-				Element AllowanceCharge = document.createElement("cac:AllowanceCharge");
-				SummaryDocumentsLine.appendChild(AllowanceCharge);				
+	//			Element AllowanceCharge = document.createElement("cac:AllowanceCharge");
+	//			SummaryDocumentsLine.appendChild(AllowanceCharge);				
 
 					// cbc:ChargeIndicator
-					Element ChargeIndicator = document.createElement("cbc:ChargeIndicator");
-					ChargeIndicator.appendChild(document.createTextNode("true"));
-					AllowanceCharge.appendChild(ChargeIndicator);			
+	//				Element ChargeIndicator = document.createElement("cbc:ChargeIndicator");
+	//				ChargeIndicator.appendChild(document.createTextNode("true"));
+	//				AllowanceCharge.appendChild(ChargeIndicator);			
 
 					// cbc:Amount
-					Element Amount = document.createElement("cbc:Amount");
-					Amount.appendChild(document.createTextNode(Formato._xml(myDetalle[linea].get_total())));
-					AllowanceCharge.appendChild(Amount);		
+	//				Element Amount = document.createElement("cbc:Amount");
+	//				Amount.appendChild(document.createTextNode(Formato._xml(myDetalle[linea].get_total())));
+	//				AllowanceCharge.appendChild(Amount);		
 
 						// currencyID
-						Attr attr_Amount = document.createAttribute("currencyID");
-						attr_Amount.setValue("PEN");
-						Amount.setAttributeNode(attr_Amount);	
+	//					Attr attr_Amount = document.createAttribute("currencyID");
+	//					attr_Amount.setValue("PEN");
+	//					Amount.setAttributeNode(attr_Amount);	
 
 
 
